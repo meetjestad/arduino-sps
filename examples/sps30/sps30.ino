@@ -3,6 +3,11 @@
 // Example arduino sketch, based on 
 // https://github.com/Sensirion/embedded-sps/blob/master/sps30-i2c/sps30_example_usage.c
 
+// Please note that the following two libraries are required for this example:
+// - SoftWire
+// - AsyncDelay
+// Please install through Sketch > Include Library > "Manage Libraries..."
+
 
 // uncomment the next line to use the serial plotter
 // #define PLOTTER_FORMAT

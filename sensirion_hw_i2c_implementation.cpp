@@ -33,11 +33,17 @@
 
 // needed for delay() routine
 #include <Arduino.h>
-#include "i2c_master_lib.h"
+#include <SoftWire.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+#define SPS_BUFFER_SIZE 64
+static uint8_t gRxBuffer[SPS_BUFFER_SIZE];
+static uint8_t gTxBuffer[SPS_BUFFER_SIZE];
+
+static SoftWire sw(SDA, SCL);
 
 /**
  * Initialize all hard- and software components that are needed for the I2C
@@ -46,22 +52,37 @@ extern "C" {
  */
 void sensirion_i2c_init()
 {
-   I2c.begin();
+  sw.begin();
+  sw.setRxBuffer(gRxBuffer, SPS_BUFFER_SIZE);
+  sw.setTxBuffer(gTxBuffer, SPS_BUFFER_SIZE);
 }
 
 s8 sensirion_i2c_read(u8 address, u8* data, u16 count)
 {
-    return I2c.read(address, count, data);
+  u8 readData[count];
+  u8 rxByteCount=0;
+
+  // 2 bytes RH, 1 CRC, 2 bytes T, 1 CRC
+  sw.requestFrom(address, count);
+
+  while (sw.available()) { // wait till all arrive
+    readData[rxByteCount++] = sw.read();
+    if(rxByteCount >= count)
+      break;
+  }
+
+  memcpy(data, readData, count);
+
+  return 0;
 }
 
 s8 sensirion_i2c_write(u8 address, const u8* data, u16 count)
 {
-    // the API doesn't forsee calls without register, so we'll use the first
-    // byte as "register", and pass the rest as data argument
-    if (count == 0) {
-      return 0;
-    }
-    return I2c.write(address, data[0], data + 1, count - 1);
+  sw.beginTransmission(address);
+  sw.write(data, count);
+  sw.endTransmission();
+
+  return 0;
 }
 
 /**

@@ -1,10 +1,28 @@
+# The most recent version can be found at https://github.com/Sensirion/arduino-sps
+
+
+
 # Arduino library for the SPS30 particulate matter sensor
 
 To learn more about the SPS30, please visit https://www.sensirion.com/sps30/. For support questions on the SPS30, please visit https://sensirion.com/contact.
 
 This library is using the code from Sensirion's [embedded-sps](https://github.com/Sensirion/embedded-sps) library, and adding a handful of changes to adapt to Arduino.
 
-Most notably, this is using an alternative [I2C Master Library](https://github.com/DSSCircuits/I2C-Master-Library) to work around the I2C buffer size limit that exists on certain Arduino platform, including the Arduino Uno series.
+Most notably, this requires the following two libraries to communicate:
+- SoftWire
+- AsyncDelay
+
+Both can be installed in the Arduino IDE; see next section for instructions.
+
+## Installation of dependencies
+
+To install the library dependecies, please follow these instructions:
+
+1. Select ```Sketch > Inculde Library > Manage Libraries...```
+1. Enter ```AsyncDelay```
+1. Press install (if not installed already)
+1. Enter ```SoftWire```
+1. Press install (if not installed already)
 
 ## Installation
 
