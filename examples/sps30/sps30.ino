@@ -34,7 +34,7 @@ void setup() {
   if (ret < 0) {
     Serial.print("error starting measurement\n");
   }
-
+  
 #ifndef PLOTTER_FORMAT
   Serial.print("measurements started\n");
 #endif /* PLOTTER_FORMAT */
@@ -48,7 +48,14 @@ void setup() {
   delay(2000);
 #endif
 
-  delay(1000);
+  // let the sensor gather data for in 8s warmup time
+  Serial.print("Initializing sensor");
+  for (int i = 0; i < 8; ++i) {
+    Serial.print(".");
+    delay(1000);
+  }
+  Serial.print("Done\n");
+
 }
 
 void loop() {
