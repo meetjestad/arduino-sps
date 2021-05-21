@@ -35,6 +35,8 @@
 // needed for delay() routine
 #include <Arduino.h>
 
+#define Wire Wire1
+
 #ifdef __cplusplus
 extern "C" {
 #endif
